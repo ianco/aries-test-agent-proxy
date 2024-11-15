@@ -1,2 +1,2 @@
 behave
-allure-behave==2.13.3
+allure-behave==2.13.5
