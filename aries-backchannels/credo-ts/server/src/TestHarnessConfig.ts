@@ -8,11 +8,12 @@ import {
 } from '@credo-ts/core'
 import { HttpInboundTransport, WsInboundTransport } from '@credo-ts/node'
 import { $log } from '@tsed/common'
-import { BaseController } from './BaseController'
 import { createAgent, TestAgent } from './TestAgent'
 import { getGenesisPath, getRandomSeed, registerPublicDid } from './utils/ledgerUtils'
 import { indyDidFromPublicKeyBase58 } from '@credo-ts/core/build/utils/did'
+import { Injectable } from '@tsed/di'
 
+@Injectable()
 export class TestHarnessConfig {
   private _createAgentArgs?: CreateAgentArguments
   private agentPorts: AgentPorts
@@ -25,7 +26,7 @@ export class TestHarnessConfig {
 
   private _agent?: TestAgent
 
-  private _controllers: BaseController[] = []
+  private _controllers: (() => void)[] = []
 
   public constructor({ backchannelPort }: { backchannelPort: number }) {
     this.agentPorts = {
@@ -40,7 +41,7 @@ export class TestHarnessConfig {
     this.externalHost = this.runMode === 'docker' ? this.dockerHost : 'localhost'
   }
 
-  public addController(controller: BaseController): void {
+  public addController(controller: () => void): void {
     $log.info('Register controller')
     this._controllers.push(controller)
   }
@@ -70,7 +71,7 @@ export class TestHarnessConfig {
   public async agentStartup() {
     // Call handlers
     for (const controller of this._controllers) {
-      await controller.onStartup.call(controller)
+      await controller()
     }
   }
 

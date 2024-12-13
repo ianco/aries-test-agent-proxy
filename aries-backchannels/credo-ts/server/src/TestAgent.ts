@@ -6,7 +6,6 @@ import { AnonCredsModule, LegacyIndyCredentialFormatService, LegacyIndyProofForm
 //import { AnonCredsRsModule } from '@aries-framework/anoncreds-rs'
 import { IndyVdrAnonCredsRegistry, IndyVdrModule, IndyVdrSovDidResolver, IndyVdrIndyDidResolver, IndyVdrPoolConfig, IndyVdrIndyDidRegistrar } from '@credo-ts/indy-vdr'
 import { TsedLogger } from './TsedLogger'
-import { TransportConfig } from './TestHarnessConfig'
 import { anoncreds } from '@hyperledger/anoncreds-nodejs'
 import { ariesAskar } from '@hyperledger/aries-askar-nodejs'
 import { indyVdr } from '@hyperledger/indy-vdr-nodejs'

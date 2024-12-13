@@ -3,14 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist",
-    "moduleResolution": "node",
-    "declaration": true,
     "noResolve": false,
     "preserveConstEnums": true,
-    "sourceMap": true,
-    "noEmit": false,
-    "inlineSources": true,
-    "skipLibCheck": true,
-    "strict": true
   }
 }

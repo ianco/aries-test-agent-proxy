@@ -1,13 +1,9 @@
+import { Inject } from '@tsed/di'
 import { TestHarnessConfig } from './TestHarnessConfig'
 
 export abstract class BaseController {
-  protected testHarnessConfig: TestHarnessConfig
-
-  public constructor(testHarnessConfig: TestHarnessConfig) {
-    this.testHarnessConfig = testHarnessConfig
-
-    this.testHarnessConfig.addController(this)
-  }
+  @Inject()
+  protected testHarnessConfig!: TestHarnessConfig
 
   protected get agent() {
     return this.testHarnessConfig.agent

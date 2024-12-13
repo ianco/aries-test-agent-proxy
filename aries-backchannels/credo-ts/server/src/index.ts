@@ -1,9 +1,8 @@
-import { $log, Logger, registerProvider } from '@tsed/common'
+import { $log, registerProvider, InjectorService } from '@tsed/common'
 import minimist from 'minimist'
-
-import { TestHarnessConfig } from './TestHarnessConfig'
 import { PlatformExpress } from '@tsed/platform-express'
 import { Server } from './Server'
+import { TestHarnessConfig } from './TestHarnessConfig'
 
 async function startup() {
   const cliArguments = minimist(process.argv.slice(2), {
@@ -33,8 +32,11 @@ async function startup() {
 
     const platform = await PlatformExpress.bootstrap(Server, {
       httpPort: testHarnessConfig.backchannelPort,
-    });
- 
+    })
+
+    const injector = platform.injector as InjectorService
+    injector.addProvider(TestHarnessConfig, { useValue: testHarnessConfig })
+
     await testHarnessConfig.agentStartup()
 
     await platform.listen(true)

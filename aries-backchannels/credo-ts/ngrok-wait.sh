@@ -25,4 +25,6 @@ fi
 
 echo "Starting Credo agent ..."
 
-yarn ts-node src/index.ts "$@"
+#yarn ts-node src/index.ts "$@"
+#yarn node --loader ts-node/esm src/index.ts "$@"
+yarn tsx src/index.ts "$@"
