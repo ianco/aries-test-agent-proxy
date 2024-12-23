@@ -1,4 +1,4 @@
-prompt_toolkit~=2.0.9
+prompt_toolkit~=2.0.10
 pygments
 git+https://github.com/webpy/webpy.git#egg=web.py
 python3-indy
