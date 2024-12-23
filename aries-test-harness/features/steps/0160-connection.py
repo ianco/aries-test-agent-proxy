@@ -83,10 +83,18 @@ def step_impl(context, n):
             context.mediator_url = context.config.userdata.get(row["name"])
             context.mediator_name = row["name"]
             assert context.mediator_url is not None and 0 < len(context.mediator_url)
+        elif row["role"] == "recipient":
+            context.recipient_url = context.config.userdata.get(row["name"])
+            context.recipient_name = row["name"]
+            assert context.recipient_url is not None and 0 < len(context.recipient_url)
+        elif row["role"] == "sender":
+            context.sender_url = context.config.userdata.get(row["name"])
+            context.sender_name = row["name"]
+            assert context.sender_url is not None and 0 < len(context.sender_url)
         else:
             role = row["role"]
             print(
-                f"Data table in step contains an unrecognized role '{role}', must be inviter, invitee, inviteinterceptor, issuer, holder, verifier, prover, requester, responder, mediator, and recipient"
+                f"Data table in step contains an unrecognized role '{role}', must be inviter, invitee, inviteinterceptor, issuer, holder, verifier, prover, requester, responder, mediator, recipient, and sender"
             )
 
     # Iterate over the context.table again and if start_parameters exist for one or more agents, call the start agent step definition.

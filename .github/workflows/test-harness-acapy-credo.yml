@@ -44,7 +44,7 @@ jobs:
         with:
           BUILD_AGENTS: "-a acapy-main -a credo"
           TEST_AGENTS: "-d acapy-main -b credo"
-          TEST_SCOPE: "-t @AcceptanceTest -t @AIP10,@RFC0441,@RFC0211,@T001-RFC0453 -t ~@wip -t ~@DIDExchangeConnection -t ~@T004-RFC0211 -t ~@QualifiedDIDs -t ~@T001-RFC0183"
+          TEST_SCOPE: "-t @AcceptanceTest -t @AIP10,@RFC0441,@RFC0211,@T001-RFC0453,@RFC0023 -t ~@wip -t ~@T004-RFC0211 -t ~@QualifiedDIDs -t ~@T001-RFC0183"
           REPORT_PROJECT: acapy-b-credo
       - name: run-send-gen-test-results-secure
         if: ${{ steps.run_test_harness.conclusion == 'success' }}

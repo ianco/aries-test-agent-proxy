@@ -20,7 +20,7 @@
             "env": {
                 "LEDGER_URL": "http://test.bcovrin.vonx.io",
                 "TAILS_SERVER_URL": "http://tails.bcovrin.vonx.io",
-                "DOCKERHOST": "acme_agent_dev"
+                "DOCKERHOST": "credo_agent_dev"
             },
             "args": [
                 "ts-node",
