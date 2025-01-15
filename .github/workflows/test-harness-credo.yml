@@ -41,7 +41,7 @@ jobs:
         with:
           BUILD_AGENTS: "-a credo"
           TEST_AGENTS: "-d credo"
-          TEST_SCOPE: "-t @AcceptanceTest -t ~@wip -t @AIP10,@RFC0211 -t ~@DIDExchangeConnection -t ~@QualifiedDIDs"
+          TEST_SCOPE: "-t @AcceptanceTest -t ~@wip -t @AIP10,@RFC0211 -t ~@QualifiedDIDs"
           REPORT_PROJECT: credo
       - name: run-send-gen-test-results-secure
         if: ${{ steps.run_test_harness.conclusion == 'success' }}

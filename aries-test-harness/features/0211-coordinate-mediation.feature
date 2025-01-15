@@ -73,7 +73,8 @@ Feature: RFC 0211 Aries Agent Mediator Coordination
       | connection |
       | 0160       |
 
-  @T004-RFC0211 @UsesCustomParameters @RFC0025 @Transport_Http @Transport_Ws @normal @AcceptanceTest
+
+  @T004-RFC0211 @UsesCustomParameters @RFC0025 @Transport_Http @Transport_Ws @normal @AcceptanceTest @allure.issue:https://github.com/openwallet-foundation/credo-ts/issues/2042 @allure.issue:https://github.com/openwallet-foundation/credo-ts/issues/2041
   Scenario Outline: Two agents creating a connection using a mediator without having inbound transports
     Given we have "2" agents
       | name  | role      |
@@ -109,6 +110,7 @@ Feature: RFC 0211 Aries Agent Mediator Coordination
     Examples: Acme and Faber creating a 0160 connection using Bob as a mediator without having inbound transports
       | acme-inbound-transports | acme-outbound-transports | bob-inbound-transports | bob-outbound-transports | faber-inbound-transports | faber-outbound-transports |
       | []                      | ["ws", "http"]           | ["ws", "http"]         | ["ws", "http"]          | []                       | ["ws", "http"]            |
+
 
   # Not all agents support being started without inbound transports. So this tests uses mediation, but with inbound transports
   @T005-RFC0211 @UsesCustomParameters @RFC0025 @Transport_Http @Transport_Ws @critical @AcceptanceTest

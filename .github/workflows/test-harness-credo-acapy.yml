@@ -12,8 +12,9 @@ name: test-harness-credo-acapy
 # Current
 #
 # All AIP10 tests are currently running.
+# OOB & DID Exchange Tests are running. 
 #
-# *Status Note Updated: 2024.09.06*
+# *Status Note Updated: 2024.10.29*
 #
 # End
 on:
@@ -42,7 +43,7 @@ jobs:
         with:
           BUILD_AGENTS: "-a credo -a acapy-main"
           TEST_AGENTS: "-d credo -b acapy-main"
-          TEST_SCOPE: "-t @AcceptanceTest -t ~@wip -t @AIP10,@RFC0211,@T001-RFC0453 -t ~@Transport_NoHttpOutbound -t ~@DIDExchangeConnection -t ~@QualifiedDIDs"
+          TEST_SCOPE: "-t @AcceptanceTest -t ~@wip -t @AIP10,@RFC0211,@T001-RFC0453,@RFC0023 -t ~@Transport_NoHttpOutbound -t ~@QualifiedDIDs"
           REPORT_PROJECT: credo-b-acapy
       - name: run-send-gen-test-results-secure
         if: ${{ steps.run_test_harness.conclusion == 'success' }}

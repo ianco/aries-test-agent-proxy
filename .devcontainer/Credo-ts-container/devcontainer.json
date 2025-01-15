@@ -25,11 +25,11 @@
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [9020],
+	"forwardPorts": [9020, 9021],
 
 	"runArgs": [
 		"--network=aath_network",
-		"--name=acme_agent_dev"
+		"--name=credo_agent_dev"
 	],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
@@ -51,6 +51,11 @@
 		apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3B4FE6ACC0B21F32 && \
 		add-apt-repository -y \"deb http://security.ubuntu.com/ubuntu bionic-security main\" && \
 		apt-get install -y --allow-unauthenticated libindy",
+
+    // Add environment variables
+    "containerEnv": {
+        "RUN_MODE": "docker"
+    },
 
 	// Configure tool-specific properties.
 	"customizations": {

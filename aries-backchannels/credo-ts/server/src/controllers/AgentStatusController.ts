@@ -36,13 +36,16 @@ export class AgentStatusController extends BaseController {
 
   @Post('/agent/start')
   async restartAgent(@BodyParams('data') data: StartAgentData) {
+    this.agent.config.logger.debug('stopping agent')
     await this.testHarnessConfig.stopAgent()
 
+    this.agent.config.logger.debug('restarting agent')
     await this.testHarnessConfig.startAgent({
       inboundTransports: data.parameters.inbound_transports ?? ['http'],
       outboundTransports: data.parameters.outbound_transports ?? ['http'],
     })
 
+    this.agent.config.logger.debug('agent startup')
     await this.testHarnessConfig.agentStartup()
   }
 }
