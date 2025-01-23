@@ -599,7 +599,7 @@ startAgent() {
     # set the docker environment that needs to be passed to the test container
     setDockerEnv
 
-    local container_id=$(docker run -dt --name "${CONTAINER_NAME}" --network aath_network --expose "${PORT_RANGE}" -p "${PORT_RANGE}:${PORT_RANGE}" ${DATA_VOLUME_ARG} ${ENV_FILE_ARG} $DOCKER_ENV "${IMAGE_NAME}" -p "${BACKCHANNEL_PORT}" -i false)
+    local container_id=$(docker run -dt --name "${CONTAINER_NAME}" -v ./.logs:/agent_logs --network aath_network --expose "${PORT_RANGE}" -p "${PORT_RANGE}:${PORT_RANGE}" ${DATA_VOLUME_ARG} ${ENV_FILE_ARG} $DOCKER_ENV "${IMAGE_NAME}" -p "${BACKCHANNEL_PORT}" -i false)
 
     sleep 1
     if [[ "${USE_NGROK}" = "true" ]]; then

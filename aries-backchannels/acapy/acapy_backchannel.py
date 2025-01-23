@@ -6,6 +6,7 @@ import os
 import signal
 import subprocess
 import sys
+import tempfile
 import yaml
 from timeit import default_timer
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
@@ -21,7 +22,7 @@ from python.agent_backchannel import (RUN_MODE, START_TIMEOUT,
                                       BackchannelCommand, default_genesis_txns)
 from python.storage import (get_resource, pop_resource, pop_resource_latest,
                             push_resource)
-from python.utils import flatten, log_msg, output_reader, prompt_loop
+from python.utils import flatten, log_msg, output_reader, prompt_loop, str2bool
 from typing_extensions import Literal
 
 # from helpers.jsonmapper.json_mapper import JsonMapper
@@ -37,6 +38,11 @@ AIP_CONFIG = int(os.getenv("AIP_CONFIG", "10"))
 
 # backchannel-specific args
 EXTRA_ARGS = os.getenv("EXTRA_ARGS")
+
+# pipe output to console
+PIPE_AGENT_OUTPUT = False
+PIPE_OUTPUT_ARG = "PIPE_AGENT_OUTPUT"
+PIPE_AGENT_OUTPUT = str2bool(os.getenv("PIPE_AGENT_OUTPUT", "False"))
 
 # other configs ...
 DEFAULT_BIN_PATH = "../venv/bin"
@@ -1811,20 +1817,42 @@ class AcaPyAgentBackchannel(AgentBackchannel):
     def _process(
         self, args: List[str], env: Dict[str, str], loop: asyncio.AbstractEventLoop
     ):
-        proc = subprocess.Popen(args, env=env, encoding="utf-8", preexec_fn=os.setsid)
-        stdout = loop.run_in_executor(
-            None,
-            output_reader,
-            proc.stdout,
-            functools.partial(self.handle_output, source="stdout"),
-        )
-        stderr = loop.run_in_executor(
-            None,
-            output_reader,
-            proc.stderr,
-            functools.partial(self.handle_output, source="stderr"),
-        )
-        self.output_handler_futures = [stdout, stderr]
+        if PIPE_AGENT_OUTPUT:
+            # pipe output directly to console
+            proc = subprocess.Popen(args, env=env, encoding="utf-8", preexec_fn=os.setsid)
+            stdout = loop.run_in_executor(
+                None,
+                output_reader,
+                proc.stdout,
+                functools.partial(self.handle_output, source="stdout"),
+            )
+            stderr = loop.run_in_executor(
+                None,
+                output_reader,
+                proc.stderr,
+                functools.partial(self.handle_output, source="stderr"),
+            )
+            self.output_handler_futures = [stdout, stderr]
+        else:
+            # setup temp file for agent output
+            tempfile1 = tempfile.NamedTemporaryFile(
+                mode='w+', encoding="utf-8", buffering=-1,
+                delete_on_close=False, delete=False,
+                dir="/agent_logs", prefix=self.ident+"-stdout",
+            )
+            tempfile2 = tempfile.NamedTemporaryFile(
+                mode='w+', encoding="utf-8", buffering=-1,
+                delete_on_close=False, delete=False,
+                dir="/agent_logs", prefix=self.ident+"-stderr",
+            )
+            proc = subprocess.Popen(
+                args,
+                env=env,
+                stdout=tempfile1,
+                stderr=tempfile2,
+                encoding="utf-8",
+                preexec_fn=os.setsid,
+            )
         return proc
 
     def get_process_args(self, bin_path: Optional[str] = None) -> List[str]:
@@ -2395,17 +2423,6 @@ async def main(start_port: int, show_timing: bool = False, interactive: bool = T
 
     if not terminated:
         os._exit(1)
-
-
-def str2bool(v):
-    if isinstance(v, bool):
-        return v
-    if v.lower() in ("yes", "true", "t", "y", "1"):
-        return True
-    elif v.lower() in ("no", "false", "f", "n", "0"):
-        return False
-    else:
-        raise argparse.ArgumentTypeError("Boolean value expected.")
 
 
 if __name__ == "__main__":
