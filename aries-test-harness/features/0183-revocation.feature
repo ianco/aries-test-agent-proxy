@@ -41,6 +41,7 @@ Feature: RFC 0183 Aries agent credential revocation and revocation notification
          | issuer | credential_data   | request_for_proof              | presentation                  |
          | Acme   | Data_DL_MaxValues | proof_request_DL_revoc_address | presentation_DL_revoc_address |
 
+   # note that the "indy" format should fail with an "anoncreds" wallet
    @T001.2-HIPE0011 @normal @AcceptanceTest @Schema_DriversLicense_Revoc @MobileTest @RFC0441
    Scenario Outline: Credential revoked by Issuer and Holder attempts to prove with a prover that doesn't care if it was revoked
       Given "2" agents
@@ -194,7 +195,7 @@ Feature: RFC 0183 Aries agent credential revocation and revocation notification
          | Acme   | Data_DL_MaxValues | 0:+86400   | proof_request_DL_revoc_address | presentation_DL_revoc_address |
          | Acme   | Data_DL_MinValues | -1:+604800 | proof_request_DL_revoc_address | presentation_DL_revoc_address |
 
-   @T006.2-HIPE0011 @normal @AcceptanceTest @Schema_DriversLicense_Revoc @MobileTest @RFC0441
+   @T006.2-HIPE0011 @normal @AcceptanceTest @Schema_DriversLicense_Revoc @MobileTest @RFC0441 @Indy
    Scenario Outline: Credential is revoked before the non-revocation instant
       Given "2" agents
          | name  | role     |
@@ -312,7 +313,7 @@ Feature: RFC 0183 Aries agent credential revocation and revocation notification
          | issuer | credential_data   | request_for_proof        | presentation            |
          | Acme   | Data_DL_MaxValues | proof_request_DL_address | presentation_DL_address |
 
-   @T012-HIPE0011 @normal @AcceptanceTest @Schema_DriversLicense_Revoc @RFC0441
+   @T012-HIPE0011 @normal @AcceptanceTest @Schema_DriversLicense_Revoc @RFC0441 @Indy
    Scenario Outline: Revocable Credential not revoked and Holder attempts to prove without a non-revocation interval
       Given "2" agents
          | name  | role     |
@@ -364,7 +365,7 @@ Feature: RFC 0183 Aries agent credential revocation and revocation notification
          | Acme   | Data_DL_MinValues | now:now   | proof_request_DL_revoc_address | presentation_DL_revoc_address_w_ts |
 
 
-   @T001-RFC0183 @RFC0183 @HIPE0011 @critical @AcceptanceTest @Schema_DriversLicense_Revoc @RFC0441
+   @T001-RFC0183 @RFC0183 @HIPE0011 @critical @AcceptanceTest @Schema_DriversLicense_Revoc @RFC0441 @Indy
    Scenario Outline: Issuer revokes a credential and sends a v1 revocation notification
       Given "2" agents
          | name  | role     |

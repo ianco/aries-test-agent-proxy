@@ -103,6 +103,7 @@ def setup_scenario_context(context: Context, scenario: Scenario):
     context.holder_name = None
 
     # issuer
+    context.issuer_did = None
     context.issuer_url = None
     context.issuer_name = None
 
@@ -446,21 +447,18 @@ def setup_scenario_context(context: Context, scenario: Scenario):
     # }
     context.mediator_dict = {}
 
-    def is_anoncreds(context=None):
+    def is_test_anoncreds(context=None):
         """Check if the test is running with askar-anoncreds wallet"""
         # First check if the @Anoncreds tag is present in the context.
         # The tag takes precedence over the EXTRA_ARGS env variable.
-        if context and "AnonCreds" in context.tags:
+        if context and "Anoncreds" in context.tags:
             return True
-        try: 
-            return json.loads(os.environ["EXTRA_ARGS"])['wallet-type'] == "askar-anoncreds"
-        except Exception:
-            return False
+        return False
 
     # Feature run with askar-anoncreds wallet
     #
     # context.anoncreds = True
-    context.anoncreds = is_anoncreds(context)
+    context.anoncreds = is_test_anoncreds(context)
 
 def before_feature(context, feature):
     # retry failed tests 

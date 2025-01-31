@@ -25,7 +25,7 @@ def prepare_proof_request(context: Any, request_for_proof: str) -> Dict[str, Any
     if context.request_for_proof:
         data = context.request_for_proof
 
-        if context.current_cred_format == "indy":
+        if context.current_cred_format == "indy" or context.current_cred_format == "anoncreds":
             if context.non_revoked_timeframe:
                 data["non_revoked"] = context.non_revoked_timeframe["non_revoked"]
 
@@ -79,6 +79,8 @@ def step_impl(context, prover, issuer, credential_data):
     # TODO Check of the Prefix CredFormat exists, throw and error if not. It is mandatory
     if "CredFormat_Indy" in context.tags:
         context.current_cred_format = "indy"
+    elif "CredFormat_Anoncreds" in context.tags:
+        context.current_cred_format = "anoncreds"
     elif "CredFormat_JSON-LD" in context.tags:
         context.current_cred_format = "json-ld"
 
@@ -278,7 +280,7 @@ def step_impl(context, prover, presentation):
     if context.presentation:
         presentation = context.presentation
 
-        if context.current_cred_format == "indy":
+        if context.current_cred_format == "indy" or context.current_cred_format == "anoncreds":
             # Find the cred ids and add the actual cred id into the presentation
             try:
                 for requested_attribute in presentation[

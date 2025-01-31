@@ -91,7 +91,7 @@ Feature: RFC 0037 Aries agent present proof
          | Faber  | Data_BI_HealthValues | proof_request_health_consent | presentation_health_consent |
 
 
-   @T001.5-RFC0037 @AIP10 @critical @AcceptanceTest @MobileTest
+   @T001.5-RFC0037 @AIP10 @critical @AcceptanceTest @MobileTest @Indy
    Scenario Outline: Present Proof where the prover does not propose a presentation of the proof and is acknowledged
       Given "2" agents
          | name  | role     |

@@ -62,7 +62,7 @@ def format_cred_proposal_by_aip_version(
         filters = amend_filters_with_runtime_data(context, filters, did_for_id)
         credential_proposal = {
             "credential_preview": {
-                "@type": "issue-credential/2.0/credential-preview",
+                "@type": "https://didcomm.org/issue-credential/2.0/credential-preview",
                 "attributes": cred_data,
             },
             "filter": filters,
@@ -104,6 +104,28 @@ def amend_filters_with_runtime_data(context, filters, did_for_id=None):
             and filters["indy"]["schema_id"] == "replace_me"
         ):
             filters["indy"]["schema_id"] = context.issuer_schema_dict[schema_name]["id"]
+
+    if "anoncreds" in filters:
+        if (
+            "schema_issuer_did" in filters["anoncreds"]
+            and filters["anoncreds"]["schema_issuer_did"] == "replace_me"
+        ):
+            filters["anoncreds"]["schema_issuer_did"] = context.issuer_did_dict[schema_name]
+        if (
+            "issuer_did" in filters["anoncreds"]
+            and filters["anoncreds"]["issuer_did"] == "replace_me"
+        ):
+            filters["anoncreds"]["issuer_did"] = context.issuer_did_dict[schema_name]
+        if (
+            "cred_def_id" in filters["anoncreds"]
+            and filters["anoncreds"]["cred_def_id"] == "replace_me"
+        ):
+            filters["anoncreds"]["cred_def_id"] = context.issuer_credential_definition_dict[schema_name]["id"]
+        if (
+            "schema_id" in filters["anoncreds"]
+            and filters["anoncreds"]["schema_id"] == "replace_me"
+        ):
+            filters["anoncreds"]["schema_id"] = context.issuer_schema_dict[schema_name]["id"]
 
     if "json-ld" in filters:
         json_ld = filters.get("json-ld")

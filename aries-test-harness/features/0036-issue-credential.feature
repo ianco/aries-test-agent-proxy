@@ -77,7 +77,7 @@ Feature: RFC 0036 Aries agent issue credential
     And "Bob" acknowledges the credential issue
     Then "Bob" has the credential issued
 
-  @T005-RFC0036 @AIP10 @minor @wip @AcceptanceTest
+  @T005-RFC0036 @AIP10 @minor @wip @AcceptanceTest @Indy
   Scenario: Issue a credential with negotiation beginning from a credential request
     Given "2" agents
       | name | role   |
@@ -92,7 +92,7 @@ Feature: RFC 0036 Aries agent issue credential
     And "Bob" acknowledges the credential issue
     Then "Bob" has the credential issued
 
-  @T006-RFC0036 @AIP10 @critical @wip @AcceptanceTest
+  @T006-RFC0036 @AIP10 @critical @wip @AcceptanceTest @Indy
   Scenario: Issue a credential with the Holder beginning with a request and is accepted
     Given "2" agents
       | name | role   |

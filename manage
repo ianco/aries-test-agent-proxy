@@ -265,7 +265,7 @@ function initEnv() {
     esac
   done
 
-  export LOG_LEVEL=${LOG_LEVEL:-info}
+  export LOG_LEVEL=${LOG_LEVEL:-WARN}
   export RUST_LOG=${RUST_LOG:-warning}
 }
 

@@ -16,6 +16,7 @@ RUN chmod +x ./jq
 COPY python/requirements.txt python/
 COPY acapy/requirements-main.txt acapy/
 RUN pip install -r python/requirements.txt -r acapy/requirements-main.txt
+RUN pip install git+https://github.com/jamshale/acapy-plugins@load-connection-didcomm#subdirectory=connections
 
 # Copy the necessary files from the AATH Backchannel sub-folders
 COPY python python

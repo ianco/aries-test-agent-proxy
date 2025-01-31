@@ -1,7 +1,7 @@
 @RFC0453 @AIP20
 Feature: RFC 0453 Aries Agent Issue Credential v2
 
-  @T001-RFC0453 @RFC0592 @critical @AcceptanceTest @CredFormat_Indy @Schema_DriversLicense_v2 @Anoncreds
+  @T001-RFC0453 @RFC0592 @critical @AcceptanceTest @Schema_DriversLicense_v2
   Scenario Outline: Issue a Indy credential with the Holder beginning with a proposal
     Given "2" agents
       | name | role   |
@@ -10,22 +10,32 @@ Feature: RFC 0453 Aries Agent Issue Credential v2
     Given "Acme" has a public did
     And "Acme" is ready to issue a credential
     And "Acme" and "Bob" have an existing connection
-    When "Bob" proposes a "indy" credential to "Acme" with <credential_data>
-    And "Acme" offers the "indy" credential
-    And "Bob" requests the "indy" credential
-    And "Acme" issues the "indy" credential
-    And "Bob" acknowledges the "indy" credential issue
-    Then "Bob" has the "indy" credential issued
+    When "Bob" proposes a "<credential_type>" credential to "Acme" with <credential_data>
+    And "Acme" offers the "<credential_type>" credential
+    And "Bob" requests the "<credential_type>" credential
+    And "Acme" issues the "<credential_type>" credential
+    And "Bob" acknowledges the "<credential_type>" credential issue
+    Then "Bob" has the "<credential_type>" credential issued
 
-    @RFC0160
+    @RFC0160 @CredFormat_Indy
     Examples:
-      | credential_data   |
-      | Data_DL_MaxValues |
+      | credential_type | credential_data   |
+      | indy            | Data_DL_MaxValues |
 
-    @DIDExchangeConnection
+    @RFC0160 @Anoncreds
     Examples:
-      | credential_data   |
-      | Data_DL_MaxValues |
+      | credential_type | credential_data   |
+      | anoncreds       | Data_DL_MaxValues |
+
+    @DIDExchangeConnection @CredFormat_Indy
+    Examples:
+      | credential_type | credential_data   |
+      | indy            | Data_DL_MaxValues |
+
+    @DIDExchangeConnection @Anoncreds
+    Examples:
+      | credential_type | credential_data   |
+      | anoncreds       | Data_DL_MaxValues |
 
   @T001.1-RFC0453 @RFC0593 @critical @AcceptanceTest @DIDExchangeConnection @CredFormat_JSON-LD @Schema_DriversLicense_v2
   Scenario Outline: Issue a JSON-LD credential with the Holder beginning with a proposal
@@ -67,7 +77,7 @@ Feature: RFC 0453 Aries Agent Issue Credential v2
       | credential_data   |
       | Data_DL_MaxValues |
 
-  @T002-RFC0453 @normal @wip @AcceptanceTest @DIDExchangeConnection @CredFormat_Indy @Schema_DriversLicense_v2
+  @T002-RFC0453 @normal @wip @AcceptanceTest @DIDExchangeConnection @Schema_DriversLicense_v2
   Scenario Outline: Issue a credential with the Holder beginning with a proposal with negotiation
     Given "2" agents
       | name | role   |
@@ -76,18 +86,24 @@ Feature: RFC 0453 Aries Agent Issue Credential v2
     Given "Acme" has a public did
     And "Acme" is ready to issue a credential
     And "Acme" and "Bob" have an existing connection
-    And "Bob" proposes a "indy" credential to "Acme" with <credential_data>
-    And "Acme" offers the "indy" credential
-    When "Bob" negotiates the offer with another proposal of the "indy" credential to "Acme" with <updated_credential_data>
-    And "Acme" offers the "indy" credential
-    And "Bob" requests the "indy" credential
-    And "Acme" issues the "indy" credential
-    And "Bob" acknowledges the "indy" credential issue
-    Then "Bob" has the "indy" credential issued
+    And "Bob" proposes a "<credential_format>" credential to "Acme" with <credential_data>
+    And "Acme" offers the "<credential_format>" credential
+    When "Bob" negotiates the offer with another proposal of the "<credential_format>" credential to "Acme" with <updated_credential_data>
+    And "Acme" offers the "<credential_format>" credential
+    And "Bob" requests the "<credential_format>" credential
+    And "Acme" issues the "<credential_format>" credential
+    And "Bob" acknowledges the "<credential_format>" credential issue
+    Then "Bob" has the "<credential_format>" credential issued
 
+    @CredFormat_Indy
     Examples:
-      | credential_data   | updated_credential_data  |
-      | Data_DL_MaxValues | Data_DL_NormalizedValues |
+      | credential_format | credential_data   | updated_credential_data  |
+      | indy              | Data_DL_MaxValues | Data_DL_NormalizedValues |
+
+    @Anoncreds
+    Examples:
+      | credential_format | credential_data   | updated_credential_data  |
+      | anoncreds         | Data_DL_MaxValues | Data_DL_NormalizedValues |
 
   # @T003-RFC0453 @critical @wip @AcceptanceTest
   # Scenario: Issue a credential with the Issuer beginning with an offer

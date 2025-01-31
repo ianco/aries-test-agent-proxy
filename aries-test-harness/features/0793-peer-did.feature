@@ -1,6 +1,6 @@
 # https://github.com/hyperledger/aries-rfcs/tree/main/features/0793-unqualfied-dids-transition
 
-@QualifiedDIDs @RFC0793 @Anoncreds
+@QualifiedDIDs @RFC0793
 Feature: Qualified DID - Unqualified DID Transition
    In order to more effectivley interoperate with other Aries Agents
    as an Aries Framework

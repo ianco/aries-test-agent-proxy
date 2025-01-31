@@ -14,7 +14,13 @@ Feature: RFC 0454 Aries agent present proof v2
       And "Faber" acknowledges the proof with formats
       Then "Bob" has the proof with formats verified
 
-      @CredFormat_Indy @RFC0592 @Schema_DriversLicense_v2 @CredProposalStart @Anoncreds
+      @CredFormat_Indy @RFC0592 @Schema_DriversLicense_v2 @CredProposalStart
+      Examples:
+         | issuer | credential_data   | request_for_proof               | presentation                   |
+         | Acme   | Data_DL_MaxValues | proof_request_DL_address_v2     | presentation_DL_address_v2     |
+         | Faber  | Data_DL_MaxValues | proof_request_DL_age_over_19_v2 | presentation_DL_age_over_19_v2 |
+
+      @CredFormat_Anoncreds @RFC0592 @Schema_DriversLicense_v2 @CredProposalStart @Anoncreds
       Examples:
          | issuer | credential_data   | request_for_proof               | presentation                   |
          | Acme   | Data_DL_MaxValues | proof_request_DL_address_v2     | presentation_DL_address_v2     |

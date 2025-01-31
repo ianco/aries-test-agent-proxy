@@ -62,6 +62,7 @@ def step_impl(context, issuer):
         context.schema = SCHEMA_TEMPLATE.copy()
         context.schema["schema_name"] = context.schema["schema_name"] + issuer
 
+    context.issuer_did = issuer_did["did"]
     context.issuer_did_dict[get_schema_name(context)] = issuer_did["did"]
 
 
@@ -88,9 +89,11 @@ def step_impl(context, issuer):
         schema = context.schema
         if context.anoncreds:
             schema["schema"]["issuerId"] = context.issuer_did_dict[get_schema_name(context)]
+        schema["issuer_id"] = context.issuer_did_dict[get_schema_name(context)]
     else:
         schema = SCHEMA_TEMPLATE.copy()
         schema["schema_name"] = schema["schema_name"] + issuer
+        schema["issuer_id"] = context.issuer_did
 
     (resp_status, resp_text) = agent_backchannel_POST(
         issuer_url + "/agent/command/", "schema", data=schema, anoncreds=context.anoncreds
@@ -121,6 +124,8 @@ def step_impl(context, issuer):
     else:
         cred_def = CRED_DEF_TEMPLATE.copy()
         cred_def["schema_id"] = context.issuer_schema_id_dict[schema_name]
+        cred_def["issuer_id"] = context.issuer_did_dict[schema_name]
+        cred_def["tag"] = str(randint(1, 10000))
 
     if context.support_revocation:
         if context.anoncreds:

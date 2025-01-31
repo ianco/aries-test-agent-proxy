@@ -124,7 +124,7 @@ class AgentBackchannel:
 
         self.admin_url = f"http://{self.internal_host}:" + str(agent_ports["admin"])
 
-        self.storage_type = "askar"
+        self.storage_type = "askar"  # deprecated - should be removed
         self.wallet_type = (
             extra_args.get("wallet-type") if extra_args.get("wallet-type") else "askar"
         )
